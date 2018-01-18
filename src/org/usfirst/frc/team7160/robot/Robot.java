@@ -13,9 +13,9 @@ import edu.wpi.first.wpilibj.drive.MecanumDrive;
 public class Robot extends IterativeRobot {
 
 	WPI_TalonSRX frontLeft = new WPI_TalonSRX(1);
-	WPI_TalonSRX frontRight = new WPI_TalonSRX(4);
+	WPI_TalonSRX frontRight = new WPI_TalonSRX(2);
 	WPI_TalonSRX backLeft = new WPI_TalonSRX(3);
-	WPI_TalonSRX backRight = new WPI_TalonSRX(2);
+	WPI_TalonSRX backRight = new WPI_TalonSRX(4);
 	// For normal tank drive-
 	/*
 	 * SpeedControllerGroup left = new SpeedControllerGroup(frontLeft, backLeft);
@@ -51,7 +51,7 @@ public class Robot extends IterativeRobot {
 		position = fms.getLocation();
 		timer.start();
 	}
-
+	
 	@Override
 	public void autonomousPeriodic() {
 		if (timer.get() <= 5) {
