@@ -7,21 +7,19 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 
 public class Robot extends IterativeRobot {
 
 	WPI_TalonSRX frontLeft = new WPI_TalonSRX(1);
-	WPI_TalonSRX frontRight = new WPI_TalonSRX(2);
+	WPI_TalonSRX frontRight = new WPI_TalonSRX(4);
 	WPI_TalonSRX backLeft = new WPI_TalonSRX(3);
-	WPI_TalonSRX backRight = new WPI_TalonSRX(4);
+	WPI_TalonSRX backRight = new WPI_TalonSRX(2);
 	// For normal tank drive-
-	/*
-	 * SpeedControllerGroup left = new SpeedControllerGroup(frontLeft, backLeft);
-	 * SpeedControllerGroup right = new SpeedControllerGroup(frontRight, backRight);
-	 */
-	// For our drive controls
+	SpeedControllerGroup left = new SpeedControllerGroup(frontLeft, backLeft);
+	SpeedControllerGroup right = new SpeedControllerGroup(frontRight, backRight);
 	MecanumDrive mainDrive = new MecanumDrive(frontLeft, backLeft, frontRight, backRight);
 
 	Joystick joy1 = new Joystick(0);
@@ -51,7 +49,7 @@ public class Robot extends IterativeRobot {
 		position = fms.getLocation();
 		timer.start();
 	}
-	
+
 	@Override
 	public void autonomousPeriodic() {
 		if (timer.get() <= 5) {
@@ -63,19 +61,16 @@ public class Robot extends IterativeRobot {
 
 	@Override
 	public void teleopPeriodic() {
-		double x = joy1.getRawAxis(0);
-		double y = joy1.getRawAxis(1);
+		double x = joy1.getRawAxis(1);
+		double y = joy1.getRawAxis(0);
 		// Only if we use MacanumDrive
-		double rot = joy1.getRawAxis(4);
-		if (Math.abs(x) >= 0.05 || Math.abs(y) >= 0.05 || Math.abs(rot) >= 0.05) {
-			mainDrive.driveCartesian(y, x, rot);
+		double rot = joy1.getRawAxis(2);
+		if (x >= 0.05 || Math.abs(y) >= 0.05 || Math.abs(rot) >= 0.05) {
+			mainDrive.driveCartesian(y / 2, -x / 2, rot / 2);
+		} else if (x >= -0.05 || Math.abs(y) >= 0.05 || Math.abs(rot) >= 0.05) {
+			mainDrive.driveCartesian(y / 2, x / 2, rot / 2);
 		} else {
 			mainDrive.driveCartesian(0, 0, 0);
-		}
-		if (joy1.getRawButton(5)) {
-			clamp.set(DoubleSolenoid.Value.kForward);
-		} else {
-			clamp.set(DoubleSolenoid.Value.kReverse);
 		}
 	}
 
