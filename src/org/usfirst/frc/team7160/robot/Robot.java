@@ -48,6 +48,10 @@ public class Robot extends IterativeRobot {
 		char theirSwitch = side.charAt(2);
 		position = fms.getLocation();
 		timer.start();
+		double autonTime = timer.get();
+		while(autonTime <= 15.0) {
+			mainDrive.driveCartesian(0.5, 0, 0);
+		}
 	}
 
 	@Override
@@ -63,15 +67,22 @@ public class Robot extends IterativeRobot {
 	public void teleopPeriodic() {
 		double x = joy1.getRawAxis(1);
 		double y = joy1.getRawAxis(0);
-		// Only if we use MacanumDrive
 		double rot = joy1.getRawAxis(2);
-		if (x >= 0.05 || Math.abs(y) >= 0.05 || Math.abs(rot) >= 0.05) {
-			mainDrive.driveCartesian(y / 2, -x / 2, rot / 2);
-		} else if (x >= -0.05 || Math.abs(y) >= 0.05 || Math.abs(rot) >= 0.05) {
+		double speed = joy1.getRawAxis(3);
+		// This will be how we change speeds.
+		/*if(speed >= 0.5) {
+			x = x/2;
+			y = y/2;
+			rot = rot/2;
+		}*/
+		if (y >= 0.05 || Math.abs(x) >= 0.05 || Math.abs(rot) >= 0.05) {
+			mainDrive.driveCartesian(-y / 2, x / 2, rot / 2);
+		} else if (y >= -0.05 || Math.abs(x) >= 0.05 || Math.abs(rot) >= 0.05) {
 			mainDrive.driveCartesian(y / 2, x / 2, rot / 2);
 		} else {
 			mainDrive.driveCartesian(0, 0, 0);
 		}
+		
 	}
 
 	@Override
