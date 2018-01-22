@@ -53,11 +53,7 @@ public class Robot extends IterativeRobot {
 
 	@Override
 	public void autonomousPeriodic() {
-		timer.start();
-		double autonTime = timer.get();
-		while(autonTime <= 15.0) {
-			mainDrive.driveCartesian(0.5, 0, 0);
-		}
+		mainDrive.driveCartesian(0.5, 0, 0);
 	}
 
 	@Override
