@@ -13,13 +13,13 @@ import edu.wpi.first.wpilibj.drive.MecanumDrive;
 
 public class Robot extends IterativeRobot {
 
-	WPI_TalonSRX frontLeft = new WPI_TalonSRX(1);
-	WPI_TalonSRX frontRight = new WPI_TalonSRX(4);
-	WPI_TalonSRX backLeft = new WPI_TalonSRX(3);
-	WPI_TalonSRX backRight = new WPI_TalonSRX(2);
+	WPI_TalonSRX frontLeft = new WPI_TalonSRX(4);
+	WPI_TalonSRX frontRight = new WPI_TalonSRX(1);
+	WPI_TalonSRX backLeft = new WPI_TalonSRX(2);
+	WPI_TalonSRX backRight = new WPI_TalonSRX(3);
 	// For normal tank drive-
-	SpeedControllerGroup left = new SpeedControllerGroup(frontLeft, backLeft);
-	SpeedControllerGroup right = new SpeedControllerGroup(frontRight, backRight);
+	//SpeedControllerGroup left = new SpeedControllerGroup(frontLeft, backLeft);
+	//SpeedControllerGroup right = new SpeedControllerGroup(frontRight, backRight);
 	MecanumDrive mainDrive = new MecanumDrive(frontLeft, backLeft, frontRight, backRight);
 
 	Joystick joy1 = new Joystick(0);
@@ -47,19 +47,16 @@ public class Robot extends IterativeRobot {
 		char ourScale = side.charAt(1);
 		char theirSwitch = side.charAt(2);
 		position = fms.getLocation();
-		timer.start();
-		double autonTime = timer.get();
-		while(autonTime <= 15.0) {
-			mainDrive.driveCartesian(0.5, 0, 0);
-		}
+		
+		
 	}
 
 	@Override
 	public void autonomousPeriodic() {
-		if (timer.get() <= 5) {
+		timer.start();
+		double autonTime = timer.get();
+		while(autonTime <= 15.0) {
 			mainDrive.driveCartesian(0.5, 0, 0);
-		} else {
-			mainDrive.driveCartesian(0, 0, 0);
 		}
 	}
 
@@ -76,9 +73,9 @@ public class Robot extends IterativeRobot {
 			rot = rot/2;
 		}*/
 		if (y >= 0.05 || Math.abs(x) >= 0.05 || Math.abs(rot) >= 0.05) {
-			mainDrive.driveCartesian(-y / 2, x / 2, rot / 2);
-		} else if (y >= -0.05 || Math.abs(x) >= 0.05 || Math.abs(rot) >= 0.05) {
 			mainDrive.driveCartesian(y / 2, x / 2, rot / 2);
+		} else if (y >= -0.05 || Math.abs(x) >= 0.05 || Math.abs(rot) >= 0.05) {
+			mainDrive.driveCartesian(-y / 4, x / 4, rot / 4);
 		} else {
 			mainDrive.driveCartesian(0, 0, 0);
 		}
